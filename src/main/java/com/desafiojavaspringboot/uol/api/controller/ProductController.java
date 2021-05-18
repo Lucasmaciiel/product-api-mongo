@@ -41,7 +41,7 @@ public class ProductController {
 
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable("id") Integer id, @Valid @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable("id") String id, @Valid @RequestBody Product product) {
         this.service.updateProduct(id, product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class ProductController {
             @ApiResponse(code = 404, message = "Returns when the product does not exist")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Product> findById(@PathVariable("id") String id) {
         Optional<Product> product = this.service.findById(id);
         return product.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -66,7 +66,7 @@ public class ProductController {
             @ApiResponse(code = 404, message = "Returns when the product does not exist")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> delete(@PathVariable("id") String  id) {
         Optional<Product> product = this.service.findById(id);
         return product.map(value -> {
             this.service.delete(value);

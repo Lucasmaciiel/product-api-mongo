@@ -22,7 +22,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void updateProduct(Integer id, Product product) {
+    public void updateProduct(String id, Product product) {
         this.repository.findById(id)
                 .map(productExisting -> {
                     product.setId(productExisting.getId());
@@ -31,7 +31,7 @@ public class ProductService {
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
     }
 
-    public Optional<Product> findById(Integer id) {
+    public Optional<Product> findById(String id) {
         return repository.findById(id);
     }
 
