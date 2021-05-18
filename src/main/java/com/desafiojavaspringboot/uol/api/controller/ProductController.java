@@ -2,10 +2,12 @@ package com.desafiojavaspringboot.uol.api.controller;
 
 import com.desafiojavaspringboot.uol.api.model.Product;
 import com.desafiojavaspringboot.uol.api.service.ProductService;
+import com.desafiojavaspringboot.uol.api.service.RabbitMQSender;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ public class ProductController {
 
     private final ProductService service;
 
+    @Autowired
+    RabbitMQSender rabbitMQSender;
+
     @CrossOrigin
     @ApiOperation(value = "Create a product")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "Returns when a product is successfully created"),
@@ -28,7 +33,8 @@ public class ProductController {
     })
     @PostMapping
     public ResponseEntity<Product> save(@Valid @RequestBody Product product) {
-        this.service.save(product);
+        Product product1 = this.service.save(product);
+        rabbitMQSender.send(product1);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 

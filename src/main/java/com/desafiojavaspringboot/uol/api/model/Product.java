@@ -35,5 +35,9 @@ public class Product implements Serializable {
     @Positive(message = "Field price must be positive")
     private Double price;
 
+    @Override
+    public String toString() {
+        return "Product [id= " + id + ", Nome= " + name + ", Descrição: " + description + "]";
+    }
 
 }
