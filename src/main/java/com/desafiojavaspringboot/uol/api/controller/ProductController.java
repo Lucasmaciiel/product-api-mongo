@@ -34,7 +34,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> save(@Valid @RequestBody Product product) {
         Product product1 = this.service.save(product);
-        rabbitMQSender.send(product1);
+        rabbitMQSender.save(product1);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
@@ -49,6 +49,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@PathVariable("id") String id, @Valid @RequestBody Product product) {
         this.service.updateProduct(id, product);
+        rabbitMQSender.update(product);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
@@ -91,11 +92,17 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @ApiOperation(value = "Filter")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success")
+    })
     @GetMapping(value = "/search")
-    public ResponseEntity<List<Product>> findByMinPriceMaxPrice(@RequestParam(required = false) Double min_price,
-                                                                @RequestParam(required = false) Double max_price) {
+    public ResponseEntity<List<Product>> findByFilter(@RequestParam(required = false) Double min_price,
+                                                                @RequestParam(required = false) Double max_price,
+                                                                @RequestParam(required = false) String q) {
 
-        List<Product> products = this.service.findByMinPriceMaxPrice(min_price, max_price);
+        List<Product> products = this.service.findByFilter(min_price, max_price, q);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

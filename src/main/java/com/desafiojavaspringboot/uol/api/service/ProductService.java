@@ -47,8 +47,8 @@ public class ProductService {
 
     }
 
-    public List<Product> findByMinPriceMaxPrice(Double min, Double max) {
-        return repository.findByMinPriceMaxPrice(min, max);
+    public List<Product> findByFilter(Double min, Double max, String q) {
+        return repository.findByFilter(min, max, q);
     }
 
 }

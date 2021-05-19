@@ -18,9 +18,14 @@ public class RabbitMQSender {
     @Value("${compasso.rabbitmq.routingkey}")
     private String routingkey;
 
-    public void send(Product product) {
+    public void save(Product product) {
         rabbitTemplate.convertAndSend(exchange, routingkey, product);
-        System.out.println("Send msg = " + product);
+        System.out.println("Salvando um produto: " + product);
+
+    }
+    public void update(Product product) {
+        rabbitTemplate.convertAndSend(exchange, routingkey, product);
+        System.out.println("Atualizando um produto com ID: " + product.getId());
 
     }
 }

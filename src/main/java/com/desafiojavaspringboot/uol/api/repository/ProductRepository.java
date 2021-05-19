@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
 
-    @Query("{ $and: [ { 'price': { $gte: ?0 } },{ 'price': { $lte: ?1 } } ] }")
-    List<Product> findByMinPriceMaxPrice(Double min, Double max);
+    @Query("{ $and: [ { 'price': { $gte: ?0 } },{ 'price': { $lte: ?1 } }, { 'name': { $eq: ?2 } } ] }")
+    List<Product> findByFilter(Double min, Double max, String name);
 
 }
